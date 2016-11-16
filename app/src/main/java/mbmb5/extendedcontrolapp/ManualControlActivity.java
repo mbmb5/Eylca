@@ -15,7 +15,7 @@
  *     along with Extended Control For Lumix Cameras.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package mbmb5.lumixextendedcontrolapp;
+package mbmb5.extendedcontrolapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
