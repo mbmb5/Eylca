@@ -19,9 +19,6 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#94a5ff</color>
-    <color name="colorPrimaryDark">#535ea3</color>
-    <color name="colorAccent">#ff6b6b</color>
-
-    <color name="black_overlay">#66000000</color>
+    <color name="foreground_material_light">#282828</color>
+    <color name="primary_text_default_material_light">#de1f1f1f</color>
 </resources>

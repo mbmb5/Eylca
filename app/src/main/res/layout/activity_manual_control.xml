@@ -21,8 +21,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
-    tools:context="mbmb5.extendedcontrolapp.ManualControlActivity">
+    tools:context="mbmb5.extendedcontrolapp.ManualControlActivity"
+    android:background="@color/colorPrimary">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -31,11 +31,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:keepScreenOn="true"
-        android:textColor="#33b5e5"
-        android:textStyle="bold"
-        android:textSize="50sp"
         android:gravity="center"
-        android:text="@string/shot" />
+        android:text="@string/shot"
+        android:autoText="false"
+        android:textColor="@android:color/black" />
 
 
 </FrameLayout>
