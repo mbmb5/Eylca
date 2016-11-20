@@ -27,14 +27,27 @@
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-    <TextView android:id="@+id/shot"
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:keepScreenOn="true"
-        android:gravity="center"
-        android:text="@string/shot"
-        android:autoText="false"
-        android:textColor="@android:color/black" />
+        android:layout_height="match_parent">
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp" />
+
+        <TextView android:id="@+id/shot"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:keepScreenOn="true"
+            android:gravity="center"
+            android:text="@string/shot"
+            android:autoText="false"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
 
 
 </FrameLayout>

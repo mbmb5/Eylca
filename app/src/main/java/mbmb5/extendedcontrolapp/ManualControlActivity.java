@@ -22,6 +22,7 @@ package mbmb5.extendedcontrolapp;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
 
 public class ManualControlActivity extends AppCompatActivity {
 
@@ -32,13 +33,16 @@ public class ManualControlActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_manual_control);
-
         mView = findViewById(R.id.shot);
+
+        final WebView myWebView = (WebView) findViewById(R.id.webview);
+        myWebView.loadUrl("http://192.168.54.1/cam.cgi?mode=camcmd&value=recmode");
 
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.out.println("Click");
+                myWebView.loadUrl("http://192.168.54.1/cam.cgi?mode=camcmd&value=capture");
             }
         });
     }
