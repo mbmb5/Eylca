@@ -21,6 +21,7 @@ package mbmb5.extendedcontrolapp;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.Network;
 import android.net.NetworkInfo;
 
 public class NetworkManaging {
@@ -30,7 +31,6 @@ public class NetworkManaging {
 
         ConnectivityManager manager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
         NetworkInfo info = manager.getActiveNetworkInfo();
-
         if (info == null)
             return false;
         if (info.getType() == manager.TYPE_MOBILE)
@@ -38,5 +38,22 @@ public class NetworkManaging {
         else
             return false;
 
+    }
+    public static boolean forceWifiUse(Context context) {
+        if (context == null)
+            return false;
+        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+        //TODO rewrite this in order to support multiples API
+        //TODO (use bindProcessToNetwork, setProcessDefaultNetwork, and requestRouteToHost)
+        Network[] networks = manager.getAllNetworks();
+        int i = 0;
+        for (i = 0; i < networks.length; i++) {
+            NetworkInfo info = manager.getNetworkInfo(networks[i]);
+            if (info != null)
+                if (info.isConnected())
+                    if (info.getType() == manager.TYPE_WIFI)
+                        break;
+        }
+        return manager.bindProcessToNetwork(networks[i]);
     }
 }

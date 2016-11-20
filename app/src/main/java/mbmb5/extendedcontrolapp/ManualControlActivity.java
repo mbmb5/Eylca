@@ -19,6 +19,7 @@
 
 package mbmb5.extendedcontrolapp;
 
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -36,9 +37,14 @@ public class ManualControlActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manual_control);
         mView = findViewById(R.id.shot);
 
-
-        if (NetworkManaging.isMobileDataOn(this.getApplicationContext())) {
-            ((TextView)mView).setText("Mobile data MUST be disconnected before starting app. Please close this app, disable it, and start the app again");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (!NetworkManaging.forceWifiUse(this.getApplicationContext()))
+                System.err.println("didn't manage to force wifi use");
+        } else {
+            if (NetworkManaging.isMobileDataOn(this.getApplicationContext())) {
+                ((TextView) mView).setText("Mobile data MUST be disconnected before starting app."
+                       + "Please close this app, disable it, and start the app again");
+            }
         }
 
         final WebView myWebView = (WebView) findViewById(R.id.webview);
