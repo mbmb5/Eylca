@@ -23,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 public class ManualControlActivity extends AppCompatActivity {
 
@@ -34,6 +35,11 @@ public class ManualControlActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_manual_control);
         mView = findViewById(R.id.shot);
+
+
+        if (NetworkManaging.isMobileDataOn(this.getApplicationContext())) {
+            ((TextView)mView).setText("Mobile data MUST be disconnected before starting app. Please close this app, disable it, and start the app again");
+        }
 
         final WebView myWebView = (WebView) findViewById(R.id.webview);
         myWebView.loadUrl("http://192.168.54.1/cam.cgi?mode=camcmd&value=recmode");
