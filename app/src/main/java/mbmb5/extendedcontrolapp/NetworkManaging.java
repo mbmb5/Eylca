@@ -39,6 +39,7 @@ public class NetworkManaging {
             return false;
 
     }
+
     public static boolean forceWifiUse(Context context) {
         if (context == null)
             return false;
@@ -55,5 +56,10 @@ public class NetworkManaging {
                         break;
         }
         return manager.bindProcessToNetwork(networks[i]);
+    }
+
+    public static String getHost(Context context) {
+        //TODO : retrieve ip of host to put it in the urls
+        return "";
     }
 }
