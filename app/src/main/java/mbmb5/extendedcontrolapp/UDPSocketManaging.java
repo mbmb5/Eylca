@@ -22,14 +22,21 @@ package mbmb5.extendedcontrolapp;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+
+import static mbmb5.extendedcontrolapp.ManualControlActivity.activity;
+import static mbmb5.extendedcontrolapp.ManualControlActivity.myWebView;
 
 public class UDPSocketManaging extends AsyncTask<Void, Void, Bitmap> {
     int serverPort = 49199;
     DatagramSocket socket;
     Bitmap currentImage;
+
+    public UDPSocketManaging() {
+    }
 
     public Bitmap doInBackground(Void... param) {
         DatagramPacket udpPacket;
@@ -38,7 +45,7 @@ public class UDPSocketManaging extends AsyncTask<Void, Void, Bitmap> {
 
         try {
             socket = new DatagramSocket(serverPort);
-            socket.setSoTimeout(1000);
+            socket.setSoTimeout(100);
             udpPacket = new DatagramPacket(outBuffer, outBuffer.length, InetAddress.getByName("127.0.1.1"), serverPort);
             socket.receive(udpPacket);
             outBuffer = udpPacket.getData();
@@ -55,6 +62,14 @@ public class UDPSocketManaging extends AsyncTask<Void, Void, Bitmap> {
             return currentImage;
 
         } catch (Exception e) {
+            //FIXME Probably not the best way to do the trick at all
+            // If we get a timeout, ask the camera to restart the stream
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    myWebView.loadUrl("http://192.168.54.1/cam.cgi?mode=startstream&value=49199");
+                }
+            });
             e.printStackTrace();
             socket.close();
             return null;

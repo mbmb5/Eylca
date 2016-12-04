@@ -34,13 +34,11 @@ public class StreamView extends SurfaceView {
     public StreamView(Context context) {
         super(context);
         manager = new StreamViewManaging(this);
-
     }
 
     public StreamView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         manager = new StreamViewManaging(this);
-
     }
 
     @Override

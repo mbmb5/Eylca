@@ -19,6 +19,7 @@
 
 package mbmb5.extendedcontrolapp;
 
+import android.app.Activity;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,12 +30,14 @@ import android.widget.TextView;
 public class ManualControlActivity extends AppCompatActivity {
 
     private View mView;
-    private static WebView myWebView;
+    public static WebView myWebView;
     public static StreamView streamView;
+    public static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity = this;
 
         setContentView(R.layout.activity_manual_control);
         mView = findViewById(R.id.shot);
@@ -51,9 +54,9 @@ public class ManualControlActivity extends AppCompatActivity {
 
         myWebView = (WebView) findViewById(R.id.webview);
         myWebView.loadUrl("http://192.168.54.1/cam.cgi?mode=camcmd&value=recmode");
-        System.err.println("cam in recmode");
+
         streamView = (StreamView) findViewById(R.id.surfaceView);
-        assert(streamView!=null);
+
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
