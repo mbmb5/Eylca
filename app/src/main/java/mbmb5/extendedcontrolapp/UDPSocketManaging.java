@@ -34,6 +34,7 @@ public class UDPSocketManaging extends AsyncTask<Void, Void, Bitmap> {
     int serverPort = 49199;
     DatagramSocket socket;
     Bitmap currentImage;
+    private static long referenceTime = System.currentTimeMillis();
 
     public UDPSocketManaging() {
     }
@@ -45,7 +46,14 @@ public class UDPSocketManaging extends AsyncTask<Void, Void, Bitmap> {
 
         try {
             socket = new DatagramSocket(serverPort);
-            socket.setSoTimeout(100);
+            // this is here to anticipate the timeout.
+            // It seems that the stream has to be restarted periodically,
+            // something like every 12 seconds. We take a little margin here.
+            if (System.currentTimeMillis()- referenceTime > 11000) {
+                throw new Exception("stream has to be restarted");
+            }
+
+            socket.setSoTimeout(300);
             udpPacket = new DatagramPacket(outBuffer, outBuffer.length, InetAddress.getByName("127.0.1.1"), serverPort);
             socket.receive(udpPacket);
             outBuffer = udpPacket.getData();
@@ -63,13 +71,14 @@ public class UDPSocketManaging extends AsyncTask<Void, Void, Bitmap> {
 
         } catch (Exception e) {
             //FIXME Probably not the best way to do the trick at all
-            // If we get a timeout, ask the camera to restart the stream
+            // If we get (or anticipate) a timeout, ask the camera to restart the stream
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     myWebView.loadUrl("http://192.168.54.1/cam.cgi?mode=startstream&value=49199");
                 }
             });
+            referenceTime = System.currentTimeMillis();
             e.printStackTrace();
             socket.close();
             return null;
