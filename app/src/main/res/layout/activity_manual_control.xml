@@ -49,11 +49,11 @@
             android:layout_height="wrap_content"
             android:minHeight="0dp" />
 
-        <ImageView
+        <mbmb5.extendedcontrolapp.StreamView
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:srcCompat="@android:drawable/editbox_dropdown_light_frame"
-            android:id="@+id/imageView" />
+            android:id="@+id/surfaceView"/>
 
     </LinearLayout>
 

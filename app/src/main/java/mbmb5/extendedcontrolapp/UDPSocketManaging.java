@@ -38,7 +38,7 @@ public class UDPSocketManaging extends AsyncTask<Void, Void, Bitmap> {
 
         try {
             socket = new DatagramSocket(serverPort);
-            socket.setSoTimeout(100);
+            socket.setSoTimeout(1000);
             udpPacket = new DatagramPacket(outBuffer, outBuffer.length, InetAddress.getByName("127.0.1.1"), serverPort);
             socket.receive(udpPacket);
             outBuffer = udpPacket.getData();

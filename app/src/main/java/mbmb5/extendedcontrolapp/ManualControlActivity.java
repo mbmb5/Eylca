@@ -19,20 +19,18 @@
 
 package mbmb5.extendedcontrolapp;
 
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ManualControlActivity extends AppCompatActivity {
 
     private View mView;
     private static WebView myWebView;
-    public static ImageView imageView;
+    public static StreamView streamView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +52,8 @@ public class ManualControlActivity extends AppCompatActivity {
         myWebView = (WebView) findViewById(R.id.webview);
         myWebView.loadUrl("http://192.168.54.1/cam.cgi?mode=camcmd&value=recmode");
         System.err.println("cam in recmode");
-
-        imageView = (ImageView) findViewById(R.id.imageView);
-
+        streamView = (StreamView) findViewById(R.id.surfaceView);
+        assert(streamView!=null);
         mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,26 +62,18 @@ public class ManualControlActivity extends AppCompatActivity {
             }
         });
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        streamView.setOnClickListener(new View.OnClickListener() {
             int i = 0;
             @Override
             public void onClick(View view) {
                 if (i == 0) {
-                    myWebView.loadUrl("http://192.168.54.1/cam.cgi?mode=startstream&value=49199");
+                    //this just cleans the webview so that we can see the
+                    // difference between the last url response and the new one
+                    myWebView.loadUrl("");
                     i++;
                 } else {
                     i = 0;
-                    try {
-                        UDPSocketManaging udpSocketManaging = new UDPSocketManaging();
-                        udpSocketManaging.execute();
-                        myWebView.loadUrl("http://192.168.54.1/cam.cgi?mode=startstream&value=49199");
-                        Bitmap result = udpSocketManaging.get();
-                        if (result != null) {
-                            imageView.setImageBitmap(result);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    myWebView.loadUrl("http://192.168.54.1/cam.cgi?mode=startstream&value=49199");
                 }
             }
         });
