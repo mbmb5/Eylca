@@ -65,7 +65,6 @@ public class UDPSocketManaging extends AsyncTask<Void, Void, Bitmap> {
             }
 
             currentImage = BitmapFactory.decodeByteArray(outBuffer, offset, 30000-offset);
-            currentImage = currentImage.createScaledBitmap(currentImage, currentImage.getWidth()*2, currentImage.getHeight()*2, false);
             socket.close();
             return currentImage;
 

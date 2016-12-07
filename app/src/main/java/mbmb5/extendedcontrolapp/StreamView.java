@@ -22,23 +22,38 @@ package mbmb5.extendedcontrolapp;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Point;
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import static mbmb5.extendedcontrolapp.ManualControlActivity.activity;
 
 public class StreamView extends SurfaceView {
     private Bitmap currentImage;
     private SurfaceHolder holder;
     private StreamViewManaging manager;
+    private int streamViewWidth;
+    private int streamViewHeigth = 0;
 
     public StreamView(Context context) {
         super(context);
         manager = new StreamViewManaging(this);
+        setDisplayWidth();
     }
 
     public StreamView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         manager = new StreamViewManaging(this);
+        setDisplayWidth();
+    }
+
+    public void setDisplayWidth() {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        streamViewWidth = size.x;
     }
 
     @Override
@@ -62,7 +77,15 @@ public class StreamView extends SurfaceView {
     }
 
     public void setCurrentImage(Bitmap bitmap) {
+        if (bitmap == null)
+            return;
         currentImage = bitmap;
+        // compute the height of the view once we know the bitmap's width and height
+        if (streamViewHeigth == 0) {
+            float factor = (float) streamViewWidth / (float) (bitmap.getWidth());
+            streamViewHeigth = (int) (currentImage.getHeight() * factor);
+        }
+        currentImage = Bitmap.createScaledBitmap(currentImage, streamViewWidth, streamViewHeigth, false);
     }
 
     @Override
