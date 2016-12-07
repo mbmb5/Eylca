@@ -31,18 +31,25 @@ import static mbmb5.extendedcontrolapp.R.id.webview;
 public class StreamViewManaging extends Thread {
     private StreamView streamView;
     private boolean stop;
+    private boolean running;
 
     public StreamViewManaging(StreamView view) {
         streamView = view;
         stop = false;
+        running = false;
     }
 
     public void stopThread() {
         stop = true;
     }
 
+    public boolean isRunning() {
+        return running;
+    }
+
     @Override
     public void run() {
+        running = true;
         while (!stop) {
             Canvas canvas = null;
             try {
@@ -67,5 +74,6 @@ public class StreamViewManaging extends Thread {
                 e.printStackTrace();
             }
         }
+        running = false;
     }
 }

@@ -33,19 +33,18 @@ import static mbmb5.extendedcontrolapp.ManualControlActivity.activity;
 public class StreamView extends SurfaceView {
     private Bitmap currentImage;
     private SurfaceHolder holder;
-    private StreamViewManaging manager;
+    private StreamViewManaging manager = null;
+    private StreamView view = this;
     private int streamViewWidth;
     private int streamViewHeigth = 0;
 
     public StreamView(Context context) {
         super(context);
-        manager = new StreamViewManaging(this);
         setDisplayWidth();
     }
 
     public StreamView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
-        manager = new StreamViewManaging(this);
         setDisplayWidth();
     }
 
@@ -63,11 +62,22 @@ public class StreamView extends SurfaceView {
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
                 manager.stopThread();
+                try {
+                    manager.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                manager = null;
             }
 
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                manager.start();
+                if (manager == null) {
+                    manager = new StreamViewManaging(view);
+                }
+                if (!manager.isRunning()) {
+                    manager.start();
+                }
             }
 
             @Override
