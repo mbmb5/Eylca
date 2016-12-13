@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ManualControlActivity extends AppCompatActivity {
 
@@ -43,12 +44,18 @@ public class ManualControlActivity extends AppCompatActivity {
         mView = findViewById(R.id.shot);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (!NetworkManaging.forceWifiUse(this.getApplicationContext()))
-                System.err.println("didn't manage to force wifi use");
+            if (!NetworkManaging.forceWifiUse(this.getApplicationContext())) {
+                Toast toast = Toast.makeText(this.getApplicationContext(),
+                        "Please connect to the wifi network of your camera and restart the app.",
+                        Toast.LENGTH_LONG);
+                toast.show();
+            }
         } else {
             if (NetworkManaging.isMobileDataOn(this.getApplicationContext())) {
-                ((TextView) mView).setText("Mobile data MUST be disconnected before starting app."
-                        + "Please close this app, disable it, and start the app again");
+                Toast toast = Toast.makeText(this.getApplicationContext(),
+                        "Please disconnect mobile data, connect to the wifi of your camera and restart the app.",
+                        Toast.LENGTH_LONG);
+                toast.show();
             }
         }
 

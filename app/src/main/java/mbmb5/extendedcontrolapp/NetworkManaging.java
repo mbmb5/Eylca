@@ -55,7 +55,11 @@ public class NetworkManaging {
                     if (info.getType() == manager.TYPE_WIFI)
                         break;
         }
-        return manager.bindProcessToNetwork(networks[i]);
+        if (i == networks.length) {
+            return false;
+        } else {
+            return manager.bindProcessToNetwork(networks[i]);
+        }
     }
 
     public static String getHost(Context context) {
