@@ -28,7 +28,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 import static mbmb5.extendedcontrolapp.ManualControlActivity.activity;
-import static mbmb5.extendedcontrolapp.ManualControlActivity.loadUrl;
 import static mbmb5.extendedcontrolapp.ManualControlActivity.startStream;
 
 public class UDPSocketManaging extends AsyncTask<Void, Void, Bitmap> {
