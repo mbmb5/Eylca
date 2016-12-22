@@ -41,42 +41,113 @@
             android:id="@+id/surfaceView"
             android:layout_weight="0.59" />
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_weight="0.59">
 
-            <ImageButton
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_menu_camera"
-                android:id="@+id/shot"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary" />
+                android:orientation="vertical" >
 
-            <ImageButton
-                android:layout_width="wrap_content"
+                <TextView
+                    android:text="Shoot control"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/shootControl"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                    android:textAlignment="center" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:text="Shoot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/photoShot"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp" />
+
+                    <Button
+                        android:text="Record"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/movieShot"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@android:drawable/ic_menu_camera"
+                        android:id="@+id/shot"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimary"
+                        android:visibility="gone" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@android:drawable/presence_video_away"
+                        android:id="@+id/record"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimary"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:text="Zoom control"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/zoomControl"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                    android:textAlignment="center"
+                    android:layout_weight="1"
+                    android:layout_marginTop="5dp" />
+
+                <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:srcCompat="@android:drawable/presence_video_away"
-                android:id="@+id/record"
-                android:layout_weight="1"
-                android:background="@color/colorPrimary" />
+                    android:layout_weight="1">
 
-        </LinearLayout>
+                    <Button
+                    android:text="Zoom -"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/zoomOut"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp" />
 
-        <TextView android:id="@+id/oldthing"
-            android:layout_width="match_parent"
-            android:layout_height="151dp"
-            android:keepScreenOn="true"
-            android:gravity="center"
-            android:text="@string/shot"
-            android:autoText="false"
-            android:textColor="@android:color/black" />
+                <Button
+                    android:text="Zoom +"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/zoomIn"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimaryDark"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
 
         <WebView
             android:id="@+id/webview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:minHeight="0dp" />
 
     </LinearLayout>
