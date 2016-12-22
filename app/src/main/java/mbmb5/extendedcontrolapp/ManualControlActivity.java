@@ -70,19 +70,19 @@ public class ManualControlActivity extends AppCompatActivity {
 
     }
 
-    public static void loadUrl(String url) {
-        myWebView.loadUrl(url);
+    public static void loadCmd(String cmd) {
+        myWebView.loadUrl("http://"+ip+"/cam.cgi"+cmd);
     }
 
     public static void switchToRecMode() {
-        loadUrl("http://"+ip+"/cam.cgi?mode=camcmd&value=recmode");
+        loadCmd("?mode=camcmd&value=recmode");
     }
 
     public static void startStream() {
-        loadUrl("http://"+ip+"/cam.cgi?mode=startstream&value=49199");
+        loadCmd("?mode=startstream&value=49199");
     }
 
     public static void shotPicture() {
-        loadUrl("http://"+ip+"/cam.cgi?mode=camcmd&value=capture");
+        loadCmd("?mode=camcmd&value=capture");
     }
 }
