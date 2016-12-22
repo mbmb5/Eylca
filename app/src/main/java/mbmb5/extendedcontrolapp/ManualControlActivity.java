@@ -21,7 +21,6 @@ package mbmb5.extendedcontrolapp;
 
 import android.app.Activity;
 import android.os.Build;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -29,11 +28,9 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
 
-import static java.lang.Thread.sleep;
-
 public class ManualControlActivity extends AppCompatActivity {
 
-    private Button photoShot, videoShot, zoomIn, zoomOut;
+    private Button photoShot, videoShot, zoomIn, zoomOut, focusIn, focusOut;
     private static boolean isVideoStarted = false;
     public static WebView myWebView;
     private static final String ip = "192.168.54.1";
@@ -114,6 +111,35 @@ public class ManualControlActivity extends AppCompatActivity {
                 }, 200);
             }
         });
+        focusIn = (Button)findViewById(R.id.focusIn);
+        focusIn.setOnClickListener(new View.OnClickListener() {
+            boolean isFirstClick = true;
+            @Override
+            public void onClick(View view) {
+                if (isFirstClick) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Warning : focus change is only possible when the camera's focus is in manual mode", Toast.LENGTH_LONG);
+                    toast.show();
+                    isFirstClick = false;
+                }
+                focusIn();
+
+            }
+        });
+        focusOut = (Button)findViewById(R.id.focusOut);
+        focusOut.setOnClickListener(new View.OnClickListener() {
+            boolean isFirstClick = true;
+            @Override
+            public void onClick(View view) {
+                if (isFirstClick) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Warning : focus change is only possible when the camera's focus is in manual mode", Toast.LENGTH_LONG);
+                    toast.show();
+                    isFirstClick = false;
+                }
+                focusOut();
+            }
+        });
 
     }
 
@@ -151,5 +177,13 @@ public class ManualControlActivity extends AppCompatActivity {
 
     public static void zoomStop() {
         loadCmd("?mode=camcmd&value=zoomstop");
+    }
+
+    public static void focusIn() {
+        loadCmd("?mode=camctrl&type=focus&value=tele-fast");
+    }
+
+    public static void focusOut() {
+        loadCmd("?mode=camctrl&type=focus&value=wide-fast");
     }
 }

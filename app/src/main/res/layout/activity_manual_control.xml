@@ -39,17 +39,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/surfaceView"
-            android:layout_weight="0.59" />
+            android:layout_weight="0.53" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.59"
+            android:layout_weight="0.5"
             android:id="@+id/buttons">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical" >
 
                 <TextView
@@ -124,6 +124,42 @@
                     android:layout_marginRight="5dp" />
                 </LinearLayout>
 
+                <TextView
+                    android:text="Focus control"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/focusControl"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                    android:textAlignment="center"
+                    android:layout_weight="1"
+                    android:layout_marginTop="5dp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:text="Focus close"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/focusOut"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp" />
+
+                    <Button
+                        android:text="Focus far"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/focusIn"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimaryDark"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp" />
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
 
