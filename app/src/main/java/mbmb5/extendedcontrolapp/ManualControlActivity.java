@@ -93,8 +93,7 @@ public class ManualControlActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 zoomIn();
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+                zoomIn.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         zoomStop();
@@ -107,8 +106,7 @@ public class ManualControlActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 zoomOut();
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+                zoomOut.postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         zoomStop();
