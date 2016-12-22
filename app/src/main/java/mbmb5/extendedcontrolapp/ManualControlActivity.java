@@ -29,18 +29,14 @@ import android.widget.Toast;
 
 public class ManualControlActivity extends AppCompatActivity {
 
-    private View mView;
     public static WebView myWebView;
-    public static StreamView streamView;
     public static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activity = this;
-
         setContentView(R.layout.activity_manual_control);
-        mView = findViewById(R.id.shot);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!NetworkManaging.forceWifiUse(this.getApplicationContext())) {
@@ -59,36 +55,16 @@ public class ManualControlActivity extends AppCompatActivity {
         }
 
         myWebView = (WebView) findViewById(R.id.webview);
-        myWebView.loadUrl("http://192.168.54.1/cam.cgi?mode=camcmd&value=recmode");
+        switchToRecMode();
 
-        streamView = (StreamView) findViewById(R.id.surfaceView);
 
-        mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println("Click");
-                myWebView.loadUrl("http://192.168.54.1/cam.cgi?mode=camcmd&value=capture");
-            }
-        });
-
-        streamView.setOnClickListener(new View.OnClickListener() {
-            int i = 0;
-            @Override
-            public void onClick(View view) {
-                if (i == 0) {
-                    //this just cleans the webview so that we can see the
-                    // difference between the last url response and the new one
-                    myWebView.loadUrl("");
-                    i++;
-                } else {
-                    i = 0;
-                    myWebView.loadUrl("http://192.168.54.1/cam.cgi?mode=startstream&value=49199");
-                }
-            }
-        });
     }
 
     public static void loadUrl(String url) {
         myWebView.loadUrl(url);
+    }
+
+    public static void switchToRecMode() {
+        loadUrl("http://192.168.54.1/cam.cgi?mode=camcmd&value=recmode");
     }
 }
