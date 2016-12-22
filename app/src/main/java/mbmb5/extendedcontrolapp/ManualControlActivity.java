@@ -30,7 +30,8 @@ import android.widget.Toast;
 
 public class ManualControlActivity extends AppCompatActivity {
 
-    private Button photoShot;
+    private Button photoShot, videoShot;
+    private static boolean isVideoStarted = false;
     public static WebView myWebView;
     private static final String ip = "192.168.54.1";
     public static Activity activity;
@@ -67,6 +68,23 @@ public class ManualControlActivity extends AppCompatActivity {
                 shotPicture();
             }
         });
+        videoShot = (Button)findViewById(R.id.movieShot);
+        videoShot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isVideoStarted) {
+                    stopMovie();
+                    videoShot.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+                    Toast toast = Toast.makeText(getApplicationContext(), "Video recorded successfully", Toast.LENGTH_SHORT);
+                    toast.show();
+                    isVideoStarted = false;
+                } else {
+                    startMovie();
+                    videoShot.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    isVideoStarted = true;
+                }
+            }
+        });
 
     }
 
@@ -84,5 +102,13 @@ public class ManualControlActivity extends AppCompatActivity {
 
     public static void shotPicture() {
         loadCmd("?mode=camcmd&value=capture");
+    }
+
+    public static void startMovie() {
+        loadCmd("?mode=camcmd&value=video_recstart");
+    }
+
+    public static void stopMovie() {
+        loadCmd("?mode=camcmd&value=video_recstop");
     }
 }
