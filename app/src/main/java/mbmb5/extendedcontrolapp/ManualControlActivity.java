@@ -21,6 +21,7 @@ package mbmb5.extendedcontrolapp;
 
 import android.app.Activity;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,9 +29,11 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
 
+import static java.lang.Thread.sleep;
+
 public class ManualControlActivity extends AppCompatActivity {
 
-    private Button photoShot, videoShot;
+    private Button photoShot, videoShot, zoomIn, zoomOut;
     private static boolean isVideoStarted = false;
     public static WebView myWebView;
     private static final String ip = "192.168.54.1";
@@ -85,6 +88,34 @@ public class ManualControlActivity extends AppCompatActivity {
                 }
             }
         });
+        zoomIn = (Button)findViewById(R.id.zoomIn);
+        zoomIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                zoomIn();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        zoomStop();
+                    }
+                }, 200);
+            }
+        });
+        zoomOut = (Button)findViewById(R.id.zoomOut);
+        zoomOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                zoomOut();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        zoomStop();
+                    }
+                }, 200);
+            }
+        });
 
     }
 
@@ -110,5 +141,17 @@ public class ManualControlActivity extends AppCompatActivity {
 
     public static void stopMovie() {
         loadCmd("?mode=camcmd&value=video_recstop");
+    }
+
+    public static void zoomIn() {
+        loadCmd("?mode=camcmd&value=tele-fast");
+    }
+
+    public static void zoomOut() {
+        loadCmd("?mode=camcmd&value=wide-fast");
+    }
+
+    public static void zoomStop() {
+        loadCmd("?mode=camcmd&value=zoomstop");
     }
 }
