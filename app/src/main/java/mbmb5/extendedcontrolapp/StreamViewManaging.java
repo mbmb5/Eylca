@@ -21,12 +21,7 @@ package mbmb5.extendedcontrolapp;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.os.Handler;
-import android.os.Looper;
-import android.webkit.WebView;
 
-import static mbmb5.extendedcontrolapp.ManualControlActivity.myWebView;
-import static mbmb5.extendedcontrolapp.R.id.webview;
 
 public class StreamViewManaging extends Thread {
     private StreamView streamView;

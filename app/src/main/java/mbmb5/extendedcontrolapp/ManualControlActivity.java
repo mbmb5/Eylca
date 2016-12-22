@@ -25,7 +25,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class ManualControlActivity extends AppCompatActivity {
@@ -87,5 +86,9 @@ public class ManualControlActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public static void loadUrl(String url) {
+        myWebView.loadUrl(url);
     }
 }

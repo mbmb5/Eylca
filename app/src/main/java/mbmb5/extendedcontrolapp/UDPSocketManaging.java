@@ -28,7 +28,7 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 
 import static mbmb5.extendedcontrolapp.ManualControlActivity.activity;
-import static mbmb5.extendedcontrolapp.ManualControlActivity.myWebView;
+import static mbmb5.extendedcontrolapp.ManualControlActivity.loadUrl;
 
 public class UDPSocketManaging extends AsyncTask<Void, Void, Bitmap> {
     int serverPort = 49199;
@@ -74,7 +74,7 @@ public class UDPSocketManaging extends AsyncTask<Void, Void, Bitmap> {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    myWebView.loadUrl("http://192.168.54.1/cam.cgi?mode=startstream&value=49199");
+                    loadUrl("http://192.168.54.1/cam.cgi?mode=startstream&value=49199");
                 }
             });
             referenceTime = System.currentTimeMillis();
