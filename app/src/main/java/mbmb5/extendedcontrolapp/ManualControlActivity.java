@@ -25,11 +25,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class ManualControlActivity extends AppCompatActivity {
 
+    private Button photoShot;
     public static WebView myWebView;
+    private static final String ip = "192.168.54.1";
     public static Activity activity;
 
     @Override
@@ -57,6 +60,13 @@ public class ManualControlActivity extends AppCompatActivity {
         myWebView = (WebView) findViewById(R.id.webview);
         switchToRecMode();
 
+        photoShot = (Button)findViewById(R.id.photoShot);
+        photoShot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shotPicture();
+            }
+        });
 
     }
 
@@ -65,6 +75,10 @@ public class ManualControlActivity extends AppCompatActivity {
     }
 
     public static void switchToRecMode() {
-        loadUrl("http://192.168.54.1/cam.cgi?mode=camcmd&value=recmode");
+        loadUrl("http://"+ip+"/cam.cgi?mode=camcmd&value=recmode");
+    }
+
+    public static void shotPicture() {
+        loadUrl("http://"+ip+"/cam.cgi?mode=camcmd&value=capture");
     }
 }
