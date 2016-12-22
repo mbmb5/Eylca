@@ -29,6 +29,7 @@ import java.net.InetAddress;
 
 import static mbmb5.extendedcontrolapp.ManualControlActivity.activity;
 import static mbmb5.extendedcontrolapp.ManualControlActivity.loadUrl;
+import static mbmb5.extendedcontrolapp.ManualControlActivity.startStream;
 
 public class UDPSocketManaging extends AsyncTask<Void, Void, Bitmap> {
     int serverPort = 49199;
@@ -69,12 +70,11 @@ public class UDPSocketManaging extends AsyncTask<Void, Void, Bitmap> {
             return currentImage;
 
         } catch (Exception e) {
-            //FIXME Probably not the best way to do the trick at all
             // If we get (or anticipate) a timeout, ask the camera to restart the stream
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    loadUrl("http://192.168.54.1/cam.cgi?mode=startstream&value=49199");
+                    startStream();
                 }
             });
             referenceTime = System.currentTimeMillis();

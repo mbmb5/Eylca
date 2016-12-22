@@ -78,6 +78,10 @@ public class ManualControlActivity extends AppCompatActivity {
         loadUrl("http://"+ip+"/cam.cgi?mode=camcmd&value=recmode");
     }
 
+    public static void startStream() {
+        loadUrl("http://"+ip+"/cam.cgi?mode=startstream&value=49199");
+    }
+
     public static void shotPicture() {
         loadUrl("http://"+ip+"/cam.cgi?mode=camcmd&value=capture");
     }
