@@ -165,6 +165,9 @@ public class ManualControlActivity extends AppCompatActivity {
                 toast.show();
                 //TODO call activity to show settings
                 return true;
+            case R.id.action_help:
+                //TODO call activity to show help
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
