@@ -22,6 +22,7 @@ package mbmb5.extendedcontrolapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -38,7 +39,6 @@ public class ManualControlActivity extends AppCompatActivity {
     private Button photoShot, videoShot, zoomIn, zoomOut, focusIn, focusOut;
     private static boolean isVideoStarted = false;
     public static WebView myWebView;
-    private static final String ip = "192.168.54.1";
     public static Activity activity;
 
     @Override
@@ -164,7 +164,6 @@ public class ManualControlActivity extends AppCompatActivity {
             case R.id.action_settings:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
-                //TODO call activity to show settings
                 return true;
             case R.id.action_help:
                 Toast toast = Toast.makeText(getApplicationContext(), "Feature not available yet", Toast.LENGTH_SHORT);
@@ -177,7 +176,11 @@ public class ManualControlActivity extends AppCompatActivity {
     }
 
     public static void loadCmd(String cmd) {
-        myWebView.loadUrl("http://"+ip+"/cam.cgi"+cmd);
+        myWebView.loadUrl("http://" +
+                PreferenceManager
+                        .getDefaultSharedPreferences(activity.getApplicationContext())
+                        .getString("camera_ip", "192.168.54.1")+"/cam.cgi"
+                + cmd);
     }
 
     public static void switchToRecMode() {
