@@ -20,6 +20,7 @@
 package mbmb5.extendedcontrolapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -161,11 +162,13 @@ public class ManualControlActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                Toast toast = Toast.makeText(getApplicationContext(), "Feature not available yet", Toast.LENGTH_SHORT);
-                toast.show();
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
                 //TODO call activity to show settings
                 return true;
             case R.id.action_help:
+                Toast toast = Toast.makeText(getApplicationContext(), "Feature not available yet", Toast.LENGTH_SHORT);
+                toast.show();
                 //TODO call activity to show help
                 return true;
             default:
