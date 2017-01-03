@@ -21,9 +21,7 @@ package mbmb5.extendedcontrolapp;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -37,8 +35,7 @@ public class ManualControlActivity extends ControlActivity {
         super.onCreate(savedInstanceState);
         activity = this;
         setContentView(R.layout.activity_manual_control);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+        setUp();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!NetworkManaging.forceWifiUse(this.getApplicationContext())) {
@@ -56,7 +53,6 @@ public class ManualControlActivity extends ControlActivity {
             }
         }
 
-        myWebView = (WebView) findViewById(R.id.webview);
         switchToRecMode();
 
         photoShot = (Button)findViewById(R.id.photoShot);
