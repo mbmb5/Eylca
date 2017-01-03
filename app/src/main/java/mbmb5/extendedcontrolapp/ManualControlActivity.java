@@ -19,27 +19,18 @@
 
 package mbmb5.extendedcontrolapp;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Build;
-import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class ManualControlActivity extends AppCompatActivity {
+public class ManualControlActivity extends ControlActivity {
 
     private Button photoShot, videoShot, zoomIn, zoomOut, focusIn, focusOut;
     private static boolean isVideoStarted = false;
-    public static WebView myWebView;
-    public static Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,78 +139,5 @@ public class ManualControlActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.appbar, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent settingsIntent = new Intent(this, SettingsActivity.class);
-                startActivity(settingsIntent);
-                return true;
-            case R.id.action_help:
-                Toast toast = Toast.makeText(getApplicationContext(), "Feature not available yet", Toast.LENGTH_SHORT);
-                toast.show();
-                //TODO call activity to show help
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    public static void loadCmd(String cmd) {
-        myWebView.loadUrl("http://" +
-                PreferenceManager
-                        .getDefaultSharedPreferences(activity.getApplicationContext())
-                        .getString("camera_ip", "192.168.54.1")+"/cam.cgi"
-                + cmd);
-    }
-
-    public static void switchToRecMode() {
-        loadCmd("?mode=camcmd&value=recmode");
-    }
-
-    public static void startStream() {
-        loadCmd("?mode=startstream&value=49199");
-    }
-
-    public static void shotPicture() {
-        loadCmd("?mode=camcmd&value=capture");
-    }
-
-    public static void startMovie() {
-        loadCmd("?mode=camcmd&value=video_recstart");
-    }
-
-    public static void stopMovie() {
-        loadCmd("?mode=camcmd&value=video_recstop");
-    }
-
-    public static void zoomIn() {
-        loadCmd("?mode=camcmd&value=tele-fast");
-    }
-
-    public static void zoomOut() {
-        loadCmd("?mode=camcmd&value=wide-fast");
-    }
-
-    public static void zoomStop() {
-        loadCmd("?mode=camcmd&value=zoomstop");
-    }
-
-    public static void focusIn() {
-        loadCmd("?mode=camctrl&type=focus&value=tele-fast");
-    }
-
-    public static void focusOut() {
-        loadCmd("?mode=camctrl&type=focus&value=wide-fast");
     }
 }
