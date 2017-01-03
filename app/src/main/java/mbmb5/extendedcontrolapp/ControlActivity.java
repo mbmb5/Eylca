@@ -105,12 +105,16 @@ public class ControlActivity extends AppCompatActivity {
                 if (activity.getClass() == MotionDetectActivity.class) {
                     Intent intent = new Intent(this, ManualControlActivity.class);
                     startActivity(intent);
+                } else {
+                    mDrawerLayout.closeDrawers();
                 }
                 break;
             case 1:
                 if (activity.getClass() == ManualControlActivity.class) {
                     Intent intent = new Intent(this, MotionDetectActivity.class);
                     startActivity(intent);
+                } else {
+                    mDrawerLayout.closeDrawers();
                 }
                 break;
         }
