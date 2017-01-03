@@ -21,17 +21,26 @@ package mbmb5.extendedcontrolapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.Locale;
 
 /* this activity allows to control the camera through a webview
  * the webview has to be set by activities which extend this one
@@ -39,10 +48,10 @@ import android.widget.Toast;
 public class ControlActivity extends AppCompatActivity {
     public static WebView myWebView;
     public static Activity activity;
-    private String[] mActivitiesTitles;
+
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
-
+    private String[] mActivitiesTitles;
 
     protected void setUp() {
         myWebView = (WebView) findViewById(R.id.webview);
@@ -57,8 +66,54 @@ public class ControlActivity extends AppCompatActivity {
         mDrawerList.setAdapter(new ArrayAdapter<String>(this,
                 R.layout.drawer_list_item, mActivitiesTitles));
         // Set the list's click listener
-        //mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+    }
 
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+    }
+
+    public static class ActivityFragment extends Fragment {
+        public static final String ARG_ACTIVITY_NUMBER = "activity_number";
+
+        public ActivityFragment() {
+            // Empty constructor required for fragment subclasses
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_activity, container, false);
+            int i = getArguments().getInt(ARG_ACTIVITY_NUMBER);
+            String planet = getResources().getStringArray(R.array.activities_array)[i];
+
+            int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()),
+                            "drawable", getActivity().getPackageName());
+            ((ImageView) rootView.findViewById(R.id.image)).setImageResource(imageId);
+            getActivity().setTitle(planet);
+            return rootView;
+        }
+    }
+
+    /** Swaps fragments in the main content view */
+    private void selectItem(int position) {
+        switch (position) {
+            case 0:
+                if (activity.getClass() == MotionDetectActivity.class) {
+                    Intent intent = new Intent(this, ManualControlActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case 1:
+                if (activity.getClass() == ManualControlActivity.class) {
+                    Intent intent = new Intent(this, MotionDetectActivity.class);
+                    startActivity(intent);
+                }
+                break;
+        }
     }
 
     @Override
