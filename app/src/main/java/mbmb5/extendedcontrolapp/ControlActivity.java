@@ -21,22 +21,20 @@ package mbmb5.extendedcontrolapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -51,6 +49,7 @@ public class ControlActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
     private String[] mActivitiesTitles;
 
     protected void setUp() {
@@ -60,6 +59,21 @@ public class ControlActivity extends AppCompatActivity {
 
         mActivitiesTitles = getResources().getStringArray(R.array.activities_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                R.string.open_drawer,  /* "open drawer" description */
+                R.string.close_drawer  /* "close drawer" description */
+                ) {};
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerToggle.syncState();
+
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         // Set the adapter for the list view
@@ -76,45 +90,33 @@ public class ControlActivity extends AppCompatActivity {
         }
     }
 
-    public static class ActivityFragment extends Fragment {
-        public static final String ARG_ACTIVITY_NUMBER = "activity_number";
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
 
-        public ActivityFragment() {
-            // Empty constructor required for fragment subclasses
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_activity, container, false);
-            int i = getArguments().getInt(ARG_ACTIVITY_NUMBER);
-            String planet = getResources().getStringArray(R.array.activities_array)[i];
-
-            int imageId = getResources().getIdentifier(planet.toLowerCase(Locale.getDefault()),
-                            "drawable", getActivity().getPackageName());
-            ((ImageView) rootView.findViewById(R.id.image)).setImageResource(imageId);
-            getActivity().setTitle(planet);
-            return rootView;
-        }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
+        mDrawerLayout.closeDrawers();
         switch (position) {
             case 0:
                 if (activity.getClass() == MotionDetectActivity.class) {
                     Intent intent = new Intent(this, ManualControlActivity.class);
                     startActivity(intent);
-                } else {
-                    mDrawerLayout.closeDrawers();
                 }
                 break;
             case 1:
                 if (activity.getClass() == ManualControlActivity.class) {
                     Intent intent = new Intent(this, MotionDetectActivity.class);
                     startActivity(intent);
-                } else {
-                    mDrawerLayout.closeDrawers();
                 }
                 break;
         }
@@ -130,6 +132,9 @@ public class ControlActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if(mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
         switch (item.getItemId()) {
             case R.id.action_settings:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
