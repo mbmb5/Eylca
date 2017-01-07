@@ -71,7 +71,7 @@ public class ControlActivity extends AppCompatActivity {
                 R.string.close_drawer  /* "close drawer" description */
                 ) {};
 
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
