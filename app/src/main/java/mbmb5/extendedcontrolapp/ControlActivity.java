@@ -38,8 +38,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.Locale;
-
 /* this activity allows to control the camera through a webview
  * the webview has to be set by activities which extend this one
  */

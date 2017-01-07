@@ -22,6 +22,7 @@ package mbmb5.extendedcontrolapp;
 import android.os.Bundle;
 
 public class MotionDetectActivity extends ControlActivity {
+    private MotionDetectCore core;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,5 +30,7 @@ public class MotionDetectActivity extends ControlActivity {
         activity = this;
         setContentView(R.layout.activity_motion_detect);
         setUp();
+        core = new MotionDetectCore();
+        core.start();
     }
 }
