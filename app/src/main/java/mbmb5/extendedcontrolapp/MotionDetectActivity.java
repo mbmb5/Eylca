@@ -93,11 +93,13 @@ public class MotionDetectActivity extends ControlActivity {
 
     @Override
     public void onBackPressed() {
-        core.stopThread();
-        try {
-            core.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        if (detectionStarted) {
+            core.stopThread();
+            try {
+                core.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         super.onBackPressed();
     }
