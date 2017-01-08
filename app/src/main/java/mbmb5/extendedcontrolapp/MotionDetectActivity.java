@@ -90,4 +90,15 @@ public class MotionDetectActivity extends ControlActivity {
         statusTextView.setText(R.string.motion_status_no_motion);
         statusTextView.setBackgroundColor(activity.getResources().getColor(R.color.colorPrimaryDark));
     }
+
+    @Override
+    public void onBackPressed() {
+        core.stopThread();
+        try {
+            core.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        super.onBackPressed();
+    }
 }
