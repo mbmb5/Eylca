@@ -50,7 +50,7 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
 
             <TextView
-                android:text="No motion detected"
+                android:text="Motion detection is not started"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/status"

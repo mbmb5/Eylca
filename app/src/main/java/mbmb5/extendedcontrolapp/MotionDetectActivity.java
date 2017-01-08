@@ -20,9 +20,30 @@
 package mbmb5.extendedcontrolapp;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.widget.TextView;
 
 public class MotionDetectActivity extends ControlActivity {
     private MotionDetectCore core;
+    static public TextView statusTextView;
+    private Handler uiHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg){
+                switch (msg.what) {
+                    case (MOTION_DETECTED):
+                        motionDetected();
+                        break;
+                    case (NO_MOTION):
+                        noMotion();
+                        break;
+                    default:
+                        super.handleMessage(msg);
+                }
+            }
+        };
+    public static final int MOTION_DETECTED = 0;
+    public static final int NO_MOTION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +51,20 @@ public class MotionDetectActivity extends ControlActivity {
         activity = this;
         setContentView(R.layout.activity_motion_detect);
         setUp();
-        core = new MotionDetectCore();
+
+        statusTextView = (TextView) findViewById(R.id.status);
+
+        core = new MotionDetectCore(actionHandler, uiHandler);
         core.start();
+    }
+
+    public void motionDetected() {
+        statusTextView.setText("Motion detected");
+        statusTextView.setBackgroundColor(activity.getResources().getColor(R.color.colorAccent));
+    }
+
+    public void noMotion() {
+        statusTextView.setText("No motion");
+        statusTextView.setBackgroundColor(activity.getResources().getColor(R.color.colorPrimaryDark));
     }
 }

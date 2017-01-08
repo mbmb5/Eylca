@@ -23,6 +23,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -49,6 +51,45 @@ public class ControlActivity extends AppCompatActivity {
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
     private String[] mActivitiesTitles;
+    protected Handler actionHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg){
+                switch (msg.what) {
+                    case (ACTION_FOCUS_IN):
+                        focusIn();
+                        break;
+                    case (ACTION_FOCUS_OUT):
+                        focusOut();
+                        break;
+                    case (ACTION_SHOT_PICTURE):
+                        shotPicture();
+                        break;
+                    case (ACTION_START_MOVIE):
+                        startMovie();
+                        break;
+                    case (ACTION_STOP_MOVIE):
+                        stopMovie();
+                        break;
+                    case (ACTION_START_STREAM):
+                        startStream();
+                        break;
+                    case (ACTION_SWITCH_TO_REC_MODE):
+                        switchToRecMode();
+                        break;
+                    case (ACTION_ZOOM_IN):
+                        zoomIn();
+                        break;
+                    case (ACTION_ZOOM_OUT):
+                        zoomOut();
+                        break;
+                    case (ACTION_ZOOM_STOP):
+                        zoomStop();
+                        break;
+                    default:
+                        super.handleMessage(msg);
+                }
+            }
+        };
 
     protected void setUp() {
         myWebView = (WebView) findViewById(R.id.webview);
@@ -155,6 +196,17 @@ public class ControlActivity extends AppCompatActivity {
                         .getString("camera_ip", "192.168.54.1")+"/cam.cgi"
                 + cmd);
     }
+
+    public static final int ACTION_SWITCH_TO_REC_MODE = 0;
+    public static final int ACTION_START_STREAM = 1;
+    public static final int ACTION_SHOT_PICTURE = 2;
+    public static final int ACTION_START_MOVIE = 3;
+    public static final int ACTION_ZOOM_IN = 4;
+    public static final int ACTION_ZOOM_OUT = 5;
+    public static final int ACTION_ZOOM_STOP = 6;
+    public static final int ACTION_FOCUS_IN = 7;
+    public static final int ACTION_FOCUS_OUT = 8;
+    public static final int ACTION_STOP_MOVIE = 9;
 
     public static void switchToRecMode() {
         loadCmd("?mode=camcmd&value=recmode");

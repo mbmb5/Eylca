@@ -19,21 +19,30 @@
 
 package mbmb5.extendedcontrolapp;
 
-import static mbmb5.extendedcontrolapp.MotionDetectActivity.activity;
-import static mbmb5.extendedcontrolapp.ControlActivity.startMovie;
-import static mbmb5.extendedcontrolapp.ControlActivity.stopMovie;
+import static mbmb5.extendedcontrolapp.ControlActivity.ACTION_START_MOVIE;
+import static mbmb5.extendedcontrolapp.ControlActivity.ACTION_STOP_MOVIE;
+import static mbmb5.extendedcontrolapp.MotionDetectActivity.MOTION_DETECTED;
+import static mbmb5.extendedcontrolapp.MotionDetectActivity.NO_MOTION;
+
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Message;
+
 import java.util.LinkedList;
+
 
 public class MotionDetectCore extends Thread {
     private boolean stop;
     private boolean running;
     private LinkedList<Bitmap> oldImages;
+    private Handler actionHandler, uiHandler;
 
-    public MotionDetectCore() {
+    public MotionDetectCore(Handler actionHandler, Handler uiHandler) {
         stop = false;
         running = false;
         oldImages = new LinkedList<Bitmap>();
+        this.actionHandler = actionHandler;
+        this.uiHandler = uiHandler;
     }
 
     public void stopThread() {
@@ -104,25 +113,29 @@ public class MotionDetectCore extends Thread {
                     if (detectMotion(oldBitmap, bitmap)) {
                         System.err.println("Motion detected");
                         if (!videoRecording) {
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    System.err.println("start movie");
-                                    startMovie();
-                                }
-                            });
+                            Message msg= uiHandler.obtainMessage();
+                            msg.what = MOTION_DETECTED;
+                            msg.sendToTarget();
+
+                            msg = actionHandler.obtainMessage();
+                            msg.what = ACTION_START_MOVIE;
+                            msg.sendToTarget();
+
+                            sleep(100);
                             videoRecording = true;
                         }
                     } else {
                         System.err.println("No motion anymore");
                         if (videoRecording) {
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    System.err.println("stop movie");
-                                    stopMovie();
-                                }
-                            });
+                            Message msg= uiHandler.obtainMessage();
+                            msg.what = NO_MOTION;
+                            msg.sendToTarget();
+
+                            msg = actionHandler.obtainMessage();
+                            msg.what = ACTION_STOP_MOVIE;
+                            msg.sendToTarget();
+
+                            sleep(100);
                             oldImages.clear();
                         }
                         videoRecording = false;
