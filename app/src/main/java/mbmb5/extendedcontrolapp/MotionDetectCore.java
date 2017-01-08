@@ -123,14 +123,13 @@ public class MotionDetectCore extends Thread {
                     Bitmap oldBitmap = oldImages.removeFirst();
                     if (detectMotion(oldBitmap, bitmap)) {
                         System.err.println("Motion detected");
-                        Message msg;
+                        Message msg = uiHandler.obtainMessage();
+                        msg.what = MOTION_DETECTED;
+                        msg.sendToTarget();
+
                         switch (behavior) {
                             case (RECORD):
                                 if (!inAction) {
-                                    msg = uiHandler.obtainMessage();
-                                    msg.what = MOTION_DETECTED;
-                                    msg.sendToTarget();
-
                                     msg = actionHandler.obtainMessage();
                                     msg.what = ACTION_START_MOVIE;
                                     msg.sendToTarget();
@@ -143,28 +142,26 @@ public class MotionDetectCore extends Thread {
                                 msg = actionHandler.obtainMessage();
                                 msg.what = ACTION_SHOT_PICTURE;
                                 msg.sendToTarget();
-                                sleep(100);
+                                sleep(200);
                                 break;
                         }
                     }else{
+                        Message msg = uiHandler.obtainMessage();
+                        msg.what = NO_MOTION;
+                        msg.sendToTarget();
                         switch (behavior) {
                             case (RECORD):
-                                System.err.println("No motion anymore");
                                 if (inAction) {
-                                    Message msg = uiHandler.obtainMessage();
-                                    msg.what = NO_MOTION;
-                                    msg.sendToTarget();
-
                                     msg = actionHandler.obtainMessage();
                                     msg.what = ACTION_STOP_MOVIE;
                                     msg.sendToTarget();
 
-                                    sleep(100);
-                                    oldImages.clear();
                                 }
                                 inAction = false;
                                 break;
                         }
+                        sleep(100);
+                        oldImages.clear();
                     }
                 }
             } catch (Exception e) {

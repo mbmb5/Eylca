@@ -78,6 +78,7 @@ public class MotionDetectActivity extends ControlActivity {
                     core.start();
                     detectionStarted = true;
                     startStopMotionDetect.setText(R.string.disable_motion_detect);
+                    statusTextView.setText(R.string.motion_status_no_motion);
                 } else {
                     core.stopThread();
                     try {
