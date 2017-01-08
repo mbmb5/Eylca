@@ -145,6 +145,7 @@ public class ControlActivity extends AppCompatActivity {
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
         mDrawerLayout.closeDrawers();
+        mDrawerLayout.setSelected(false);
         switch (position) {
             case 0:
                 if (activity.getClass() == MotionDetectActivity.class) {
