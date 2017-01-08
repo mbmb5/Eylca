@@ -25,6 +25,11 @@
     <string name="title_activity_settings">SettingsActivity</string>
     <string name="open_drawer">Open navigation drawer</string>
     <string name="close_drawer">Close navigation drawer</string>
+    <string name="motion_status_not_started">Motion detection is not started</string>
+    <string name="motion_status_no_motion">No motion</string>
+    <string name="motion_status_motion">Motion detected</string>
+    <string name="enable_motion_detect">Start motion detect</string>
+    <string name="disable_motion_detect">Stop motion detect</string>
     <string-array name="activities_array">
         <item>Basic Control</item>
         <item>Motion Detect</item>

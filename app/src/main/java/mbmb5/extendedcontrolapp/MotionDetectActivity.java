@@ -22,11 +22,14 @@ package mbmb5.extendedcontrolapp;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MotionDetectActivity extends ControlActivity {
     private MotionDetectCore core;
     static public TextView statusTextView;
+    private boolean detectionStarted = false;
     private Handler uiHandler = new Handler() {
             @Override
             public void handleMessage(Message msg){
@@ -53,18 +56,38 @@ public class MotionDetectActivity extends ControlActivity {
         setUp();
 
         statusTextView = (TextView) findViewById(R.id.status);
-
-        core = new MotionDetectCore(actionHandler, uiHandler);
-        core.start();
+        final Button startStopMotionDetect = (Button) findViewById(R.id.start_stop_motion_detect);
+        startStopMotionDetect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!detectionStarted) {
+                    core = new MotionDetectCore(actionHandler, uiHandler);
+                    core.start();
+                    detectionStarted = true;
+                    startStopMotionDetect.setText(R.string.disable_motion_detect);
+                } else {
+                    core.stopThread();
+                    try {
+                        core.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    core = null;
+                    detectionStarted = false;
+                    startStopMotionDetect.setText(R.string.enable_motion_detect);
+                    statusTextView.setText(R.string.motion_status_not_started);
+                }
+            }
+        });
     }
 
     public void motionDetected() {
-        statusTextView.setText("Motion detected");
+        statusTextView.setText(R.string.motion_status_motion);
         statusTextView.setBackgroundColor(activity.getResources().getColor(R.color.colorAccent));
     }
 
     public void noMotion() {
-        statusTextView.setText("No motion");
+        statusTextView.setText(R.string.motion_status_no_motion);
         statusTextView.setBackgroundColor(activity.getResources().getColor(R.color.colorPrimaryDark));
     }
 }
