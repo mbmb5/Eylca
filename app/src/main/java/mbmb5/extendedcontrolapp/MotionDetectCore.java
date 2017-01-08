@@ -19,6 +19,7 @@
 
 package mbmb5.extendedcontrolapp;
 
+import static mbmb5.extendedcontrolapp.ControlActivity.ACTION_SHOT_PICTURE;
 import static mbmb5.extendedcontrolapp.ControlActivity.ACTION_START_MOVIE;
 import static mbmb5.extendedcontrolapp.ControlActivity.ACTION_STOP_MOVIE;
 import static mbmb5.extendedcontrolapp.MotionDetectActivity.MOTION_DETECTED;
@@ -36,6 +37,9 @@ public class MotionDetectCore extends Thread {
     private boolean running;
     private LinkedList<Bitmap> oldImages;
     private Handler actionHandler, uiHandler;
+    public static final int RECORD = 0;
+    public static final int SHOOT = 1;
+    private int behavior = RECORD;
 
     public MotionDetectCore(Handler actionHandler, Handler uiHandler) {
         stop = false;
@@ -56,7 +60,7 @@ public class MotionDetectCore extends Thread {
     /* Compare two pixels to see if there is a significant difference between them */
     /* returns true if the pixels are similar */
     private boolean comparePixels(int pixel1, int pixel2) {
-        int threshold = 50;
+        int threshold = 100;
         int shift = 0;
         for (int i = 0; i < 3; i++) {
             int component1 = (pixel1 >> shift) & 0xff;
@@ -76,13 +80,15 @@ public class MotionDetectCore extends Thread {
             return false;
         if (reference.getHeight() != newBitmap.getHeight())
             return false;
-        int width = reference.getWidth();
-        int height = reference.getHeight();
+        int width = reference.getWidth() / 10;
+        int height = reference.getHeight() / 10;
         int resol = width*height;
         int[] refPixels = new int[resol];
         int[] newPixels = new int[resol];
-        reference.getPixels(refPixels, 0, width, 0, 0, width, height);
-        newBitmap.getPixels(newPixels, 0, width, 0, 0, width, height);
+        Bitmap.createScaledBitmap(reference, width, height, false)
+                .getPixels(refPixels, 0, width, 0, 0, width, height);
+        Bitmap.createScaledBitmap(newBitmap, width, height, false)
+                .getPixels(newPixels, 0, width, 0, 0, width, height);
 
         int differentPixels = 0;
         for (int i = 0; i < resol; i++) {
@@ -96,10 +102,15 @@ public class MotionDetectCore extends Thread {
         return false;
     }
 
+    public void setBehavior(int behavior) {
+        assert(!running);
+        this.behavior = behavior;
+    }
+
     @Override
     public void run() {
         running = true;
-        boolean videoRecording = false;
+        boolean inAction = false;
         while (!stop) {
             try {
                 UDPSocketManaging udpSocketManaging = new UDPSocketManaging();
@@ -112,33 +123,48 @@ public class MotionDetectCore extends Thread {
                     Bitmap oldBitmap = oldImages.removeFirst();
                     if (detectMotion(oldBitmap, bitmap)) {
                         System.err.println("Motion detected");
-                        if (!videoRecording) {
-                            Message msg= uiHandler.obtainMessage();
-                            msg.what = MOTION_DETECTED;
-                            msg.sendToTarget();
+                        Message msg;
+                        switch (behavior) {
+                            case (RECORD):
+                                if (!inAction) {
+                                    msg = uiHandler.obtainMessage();
+                                    msg.what = MOTION_DETECTED;
+                                    msg.sendToTarget();
 
-                            msg = actionHandler.obtainMessage();
-                            msg.what = ACTION_START_MOVIE;
-                            msg.sendToTarget();
+                                    msg = actionHandler.obtainMessage();
+                                    msg.what = ACTION_START_MOVIE;
+                                    msg.sendToTarget();
 
-                            sleep(100);
-                            videoRecording = true;
+                                    sleep(100);
+                                    inAction = true;
+                                }
+                                break;
+                            case (SHOOT):
+                                msg = actionHandler.obtainMessage();
+                                msg.what = ACTION_SHOT_PICTURE;
+                                msg.sendToTarget();
+                                sleep(100);
+                                break;
                         }
-                    } else {
-                        System.err.println("No motion anymore");
-                        if (videoRecording) {
-                            Message msg= uiHandler.obtainMessage();
-                            msg.what = NO_MOTION;
-                            msg.sendToTarget();
+                    }else{
+                        switch (behavior) {
+                            case (RECORD):
+                                System.err.println("No motion anymore");
+                                if (inAction) {
+                                    Message msg = uiHandler.obtainMessage();
+                                    msg.what = NO_MOTION;
+                                    msg.sendToTarget();
 
-                            msg = actionHandler.obtainMessage();
-                            msg.what = ACTION_STOP_MOVIE;
-                            msg.sendToTarget();
+                                    msg = actionHandler.obtainMessage();
+                                    msg.what = ACTION_STOP_MOVIE;
+                                    msg.sendToTarget();
 
-                            sleep(100);
-                            oldImages.clear();
+                                    sleep(100);
+                                    oldImages.clear();
+                                }
+                                inAction = false;
+                                break;
                         }
-                        videoRecording = false;
                     }
                 }
             } catch (Exception e) {

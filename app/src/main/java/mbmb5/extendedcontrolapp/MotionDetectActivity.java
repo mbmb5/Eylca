@@ -22,8 +22,11 @@ package mbmb5.extendedcontrolapp;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class MotionDetectActivity extends ControlActivity {
@@ -56,12 +59,22 @@ public class MotionDetectActivity extends ControlActivity {
         setUp();
 
         statusTextView = (TextView) findViewById(R.id.status);
+
+        final RadioGroup behaviourWhenDetect = (RadioGroup) findViewById(R.id.radio_buttons_behaviour);
         final Button startStopMotionDetect = (Button) findViewById(R.id.start_stop_motion_detect);
         startStopMotionDetect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!detectionStarted) {
                     core = new MotionDetectCore(actionHandler, uiHandler);
+                    switch (behaviourWhenDetect.getCheckedRadioButtonId()) {
+                        case R.id.record_mode:
+                            core.setBehavior(MotionDetectCore.RECORD);
+                            break;
+                        case R.id.burst_mode:
+                            core.setBehavior(MotionDetectCore.SHOOT);
+                            break;
+                    }
                     core.start();
                     detectionStarted = true;
                     startStopMotionDetect.setText(R.string.disable_motion_detect);
@@ -79,6 +92,7 @@ public class MotionDetectActivity extends ControlActivity {
                 }
             }
         });
+
     }
 
     public void motionDetected() {

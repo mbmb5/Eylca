@@ -87,21 +87,28 @@
                             android:padding="5dp"
                             android:layout_marginTop="15dp" />
 
-                        <RadioButton
-                            android:text="continuously shoot"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-                            android:id="@+id/burst_mode"
-                            android:layout_weight="1" />
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:id="@+id/radio_buttons_behaviour"
+                            android:checkedButton="@+id/record_mode">
 
-                        <RadioButton
-                            android:text="record video"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
-                            android:id="@+id/record_mode"
-                            android:layout_weight="1" />
+                            <RadioButton
+                                android:text="continuously shoot"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                                android:id="@+id/burst_mode"
+                                android:layout_weight="1" />
+
+                            <RadioButton
+                                android:text="record video"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                                android:id="@+id/record_mode"
+                                android:layout_weight="1" />
+                        </RadioGroup>
 
                         <Button
                             android:text="Start motion detect"
