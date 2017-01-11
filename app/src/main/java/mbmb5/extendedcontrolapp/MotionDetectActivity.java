@@ -74,6 +74,9 @@ public class MotionDetectActivity extends ControlActivity {
                         case R.id.burst_mode:
                             core.setBehavior(MotionDetectCore.SHOOT);
                             break;
+                        case R.id.nothing_mode:
+                            core.setBehavior(MotionDetectCore.DO_NOTHING);
+                            break;
                     }
                     core.start();
                     detectionStarted = true;

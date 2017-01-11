@@ -39,6 +39,7 @@ public class MotionDetectCore extends Thread {
     private Handler actionHandler, uiHandler;
     public static final int RECORD = 0;
     public static final int SHOOT = 1;
+    public static final int DO_NOTHING = 2;
     private int behavior = RECORD;
 
     public MotionDetectCore(Handler actionHandler, Handler uiHandler) {
@@ -149,6 +150,8 @@ public class MotionDetectCore extends Thread {
                                 msg.what = ACTION_SHOT_PICTURE;
                                 msg.sendToTarget();
                                 sleep(200);
+                                break;
+                            case (DO_NOTHING):
                                 break;
                         }
                     }else{

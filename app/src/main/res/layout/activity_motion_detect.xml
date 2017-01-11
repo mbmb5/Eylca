@@ -94,6 +94,13 @@
                             android:checkedButton="@+id/record_mode">
 
                             <RadioButton
+                                android:text="do nothing"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/nothing_mode"
+                                android:layout_weight="1" />
+
+                            <RadioButton
                                 android:text="continuously shoot"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
