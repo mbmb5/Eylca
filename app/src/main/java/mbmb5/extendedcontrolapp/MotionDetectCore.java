@@ -74,14 +74,14 @@ public class MotionDetectCore extends Thread {
     }
 
     /* Compare newBitmap to reference, and if there is a significant difference, returns true */
-    private boolean detectMotion(Bitmap reference, Bitmap newBitmap) {
+    private boolean detectMotion(Bitmap reference, Bitmap newBitmap) throws Exception {
         /* Test if comparison can be made */
         if (reference.getWidth() != newBitmap.getWidth())
-            return false;
+            throw new Exception("Can't compare images");
         if (reference.getHeight() != newBitmap.getHeight())
-            return false;
-        int width = reference.getWidth() / 10;
-        int height = reference.getHeight() / 10;
+            throw new Exception("Can't compare images");
+        int width = 20;
+        int height = 20;
         int resol = width*height;
         int[] refPixels = new int[resol];
         int[] newPixels = new int[resol];
@@ -89,14 +89,21 @@ public class MotionDetectCore extends Thread {
                 .getPixels(refPixels, 0, width, 0, 0, width, height);
         Bitmap.createScaledBitmap(newBitmap, width, height, false)
                 .getPixels(newPixels, 0, width, 0, 0, width, height);
-
         int differentPixels = 0;
         for (int i = 0; i < resol; i++) {
             if (comparePixels(newPixels[i], refPixels[i])) {
                 differentPixels++;
             }
         }
-        if (differentPixels > (resol / 200))
+        System.err.println(differentPixels);
+        /* this test intends to detect that one of the two images shall be skipped
+            When in shoot mode, the bitmap gets completely black when the camera is shooting
+            this test allows to skip comparison if we get one of these bitmaps
+         */
+        if (differentPixels > resol-width) {
+            throw new Exception("Can't compare images");
+        }
+        if (differentPixels > width*2)
             return true;
 
         return false;
@@ -119,7 +126,7 @@ public class MotionDetectCore extends Thread {
                     throw new Exception("Found null Bitmap");
                 }
                 oldImages.add(bitmap);
-                if (oldImages.size() > 10) {
+                if (oldImages.size() > 20) {
                     Bitmap oldBitmap = oldImages.removeFirst();
                     if (detectMotion(oldBitmap, bitmap)) {
                         System.err.println("Motion detected");
@@ -133,7 +140,6 @@ public class MotionDetectCore extends Thread {
                                     msg = actionHandler.obtainMessage();
                                     msg.what = ACTION_START_MOVIE;
                                     msg.sendToTarget();
-
                                     sleep(100);
                                     inAction = true;
                                 }
@@ -173,6 +179,7 @@ public class MotionDetectCore extends Thread {
                 e.printStackTrace();
             }
         }
+        oldImages.clear();
         running = false;
     }
 }
