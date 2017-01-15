@@ -47,6 +47,7 @@
         This application allows you to take pictures or record a video when a motion is detected.\n
         The first thing to do is to connect the phone to the wifi provided by the camera BEFORE launching the app.\n
         Then, if nothing appears, go to the settings and try to change the ip address to the ip address of your camera.\n
+        You can find the ip address of your camera in your camera wifi settings.\n
         If however you see what the camera sees, then it is perfect !
         \n\n
         This application is open-source, released under GPLv3. You can see the code on https://github.com/mbmb5/Eylca
