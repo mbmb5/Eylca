@@ -22,6 +22,7 @@ package mbmb5.extendedcontrolapp;
 import static mbmb5.extendedcontrolapp.ControlActivity.ACTION_SHOT_PICTURE;
 import static mbmb5.extendedcontrolapp.ControlActivity.ACTION_START_MOVIE;
 import static mbmb5.extendedcontrolapp.ControlActivity.ACTION_STOP_MOVIE;
+import static mbmb5.extendedcontrolapp.ControlActivity.ACTION_SWITCH_TO_REC_MODE;
 import static mbmb5.extendedcontrolapp.MotionDetectActivity.MOTION_DETECTED;
 import static mbmb5.extendedcontrolapp.MotionDetectActivity.NO_MOTION;
 
@@ -169,6 +170,10 @@ public class MotionDetectCore extends Thread {
                                 inAction = false;
                                 break;
                         }
+                        /* prevent the camera from getting into sleep mode */
+                        msg = actionHandler.obtainMessage();
+                        msg.what = ACTION_SWITCH_TO_REC_MODE;
+                        msg.sendToTarget();
                         sleep(100);
                         oldImages.clear();
                     }
