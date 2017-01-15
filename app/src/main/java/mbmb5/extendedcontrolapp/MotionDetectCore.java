@@ -178,7 +178,10 @@ public class MotionDetectCore extends Thread {
                                     msg = actionHandler.obtainMessage();
                                     msg.what = ACTION_STOP_MOVIE;
                                     msg.sendToTarget();
-
+                                    /* make sure the camera has enough time to stop recording
+                                        before calling "ACTION_SWITCH_TO_REC_MODE".
+                                        Otherwise, the recording may not stop */
+                                    sleep(400);
                                 }
                                 break;
                         }
