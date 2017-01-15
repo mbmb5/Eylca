@@ -38,6 +38,8 @@ public class MotionDetectCore extends Thread {
     private boolean running;
     private LinkedList<Bitmap> oldImages;
     private Handler actionHandler, uiHandler;
+    private int thresholdPixelDifference = 100;
+    private int thresholdObjectSize = 10;
     public static final int RECORD = 0;
     public static final int SHOOT = 1;
     public static final int DO_NOTHING = 2;
@@ -59,16 +61,22 @@ public class MotionDetectCore extends Thread {
         return running;
     }
 
+    public void setThresholdPixelDifference(int thresholdPixelDifference) {
+        this.thresholdPixelDifference = thresholdPixelDifference;
+    }
+
+    public void setThresholdObjectSize(int thresholdObjectSize) {
+        this.thresholdObjectSize = thresholdObjectSize;
+    }
     /* Compare two pixels to see if there is a significant difference between them */
     /* returns true if the pixels are similar */
     private boolean comparePixels(int pixel1, int pixel2) {
-        int threshold = 100;
         int shift = 0;
         for (int i = 0; i < 3; i++) {
             int component1 = (pixel1 >> shift) & 0xff;
             int component2 = (pixel2 >> shift) & 0xff;
             shift += 8;
-            if ((component1 - component2) > threshold || (component2 - component1) > threshold) {
+            if ((component1 - component2) > thresholdPixelDifference || (component2 - component1) > thresholdPixelDifference) {
                 return true;
             }
         }
@@ -105,7 +113,10 @@ public class MotionDetectCore extends Thread {
         if (differentPixels > resol-width) {
             throw new Exception("Can't compare images");
         }
-        if (differentPixels > width*2)
+        /* thresholdObjectSize is a number between 1 and 100 */
+        /* here, the resolution is 400 pixels. We scale thresholdObjectSize
+           to get a range from 4 to 400 pixels*/
+        if (differentPixels > thresholdObjectSize*4)
             return true;
 
         return false;

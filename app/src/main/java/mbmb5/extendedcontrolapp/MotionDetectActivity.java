@@ -23,8 +23,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -96,6 +99,51 @@ public class MotionDetectActivity extends ControlActivity {
                 }
             }
         });
+
+        final EditText thresholdDifferenceEditText = (EditText) findViewById(R.id.value_threshold_difference);
+        final EditText thresholdSizeEditText = (EditText) findViewById(R.id.value_threshold_size);
+
+
+        TextWatcher watcherThresholdDifference = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String number = editable.toString();
+                if (number.length()!=0) {
+                    int threshold = Integer.parseInt(number);
+                    core.setThresholdPixelDifference(threshold);
+                }
+            }
+        };
+        TextWatcher watcherThresholdSize = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String number = editable.toString();
+                if (number.length()!=0) {
+                    int threshold = Integer.parseInt(number);
+                    core.setThresholdObjectSize(threshold);
+                }
+
+            }
+        };
+        thresholdDifferenceEditText.addTextChangedListener(watcherThresholdDifference);
+        thresholdSizeEditText.addTextChangedListener(watcherThresholdSize);
+
 
     }
 

@@ -79,7 +79,7 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:text="When motion is detected :"
+                            android:text="When motion is detected:"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
@@ -97,6 +97,7 @@
                                 android:text="do nothing"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
                                 android:id="@+id/nothing_mode"
                                 android:layout_weight="1" />
 
@@ -116,6 +117,49 @@
                                 android:id="@+id/record_mode"
                                 android:layout_weight="1" />
                         </RadioGroup>
+
+                        <TextView
+                            android:text="Motion detection parameters:"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+                            android:id="@+id/parameters"
+                            android:padding="5dp"
+                            android:layout_marginTop="15dp" />
+
+                        <TextView
+                            android:text="Threshold difference:\nany number between 1 (very sensitive but very error prone) and 254 (not sensitive at all but not error prone)"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                            android:id="@+id/threshold_difference"
+                            android:layout_weight="1"/>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:ems="10"
+                            android:id="@+id/value_threshold_difference"
+                            android:layout_weight="1"
+                            android:text="100" />
+
+                        <TextView
+                            android:text="Size of object to be detected:\nany number between 1 (small) and 100 (huge)"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                            android:id="@+id/threshold_size"
+                            android:layout_weight="1" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"
+                            android:ems="10"
+                            android:id="@+id/value_threshold_size"
+                            android:layout_weight="1"
+                            android:text="10" />
 
                         <Button
                             android:text="Start motion detect"
