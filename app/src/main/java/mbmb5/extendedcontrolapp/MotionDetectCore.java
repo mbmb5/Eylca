@@ -143,7 +143,6 @@ public class MotionDetectCore extends Thread {
                                     msg.what = ACTION_START_MOVIE;
                                     msg.sendToTarget();
                                     sleep(100);
-                                    inAction = true;
                                 }
                                 break;
                             case (SHOOT):
@@ -155,6 +154,7 @@ public class MotionDetectCore extends Thread {
                             case (DO_NOTHING):
                                 break;
                         }
+                        inAction = true;
                     }else{
                         Message msg = uiHandler.obtainMessage();
                         msg.what = NO_MOTION;
@@ -167,15 +167,17 @@ public class MotionDetectCore extends Thread {
                                     msg.sendToTarget();
 
                                 }
-                                inAction = false;
                                 break;
+                        }
+                        if (inAction) {
+                            inAction = false;
+                            oldImages.clear();
                         }
                         /* prevent the camera from getting into sleep mode */
                         msg = actionHandler.obtainMessage();
                         msg.what = ACTION_SWITCH_TO_REC_MODE;
                         msg.sendToTarget();
                         sleep(100);
-                        oldImages.clear();
                     }
                 }
             } catch (Exception e) {
