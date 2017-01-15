@@ -135,5 +135,16 @@ public class ManualControlActivity extends ControlActivity {
             }
         });
 
+        /* allow to click on the stream view to switch to rec mode if
+            we don't see anything on screen
+         */
+        StreamView streamView = (StreamView)findViewById(R.id.surfaceView);
+        streamView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switchToRecMode();
+            }
+        });
+
     }
 }
