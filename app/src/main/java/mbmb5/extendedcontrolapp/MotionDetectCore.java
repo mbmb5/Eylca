@@ -45,12 +45,14 @@ public class MotionDetectCore extends Thread {
     public static final int DO_NOTHING = 2;
     private int behavior = RECORD;
 
-    public MotionDetectCore(Handler actionHandler, Handler uiHandler) {
+    public MotionDetectCore(Handler actionHandler, Handler uiHandler, int thresholdPixelDifference, int thresholdObjectSize) {
         stop = false;
         running = false;
         oldImages = new LinkedList<Bitmap>();
         this.actionHandler = actionHandler;
         this.uiHandler = uiHandler;
+        this.thresholdPixelDifference = thresholdPixelDifference;
+        this.thresholdObjectSize = thresholdObjectSize;
     }
 
     public void stopThread() {

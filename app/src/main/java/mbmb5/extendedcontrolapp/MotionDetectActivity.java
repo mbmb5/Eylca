@@ -34,6 +34,8 @@ import android.widget.TextView;
 
 public class MotionDetectActivity extends ControlActivity {
     private MotionDetectCore core;
+    private int thresholdPixelDifference = 100;
+    private int thresholdObjectSize = 10;
     static public TextView statusTextView;
     private boolean detectionStarted = false;
     private Handler uiHandler = new Handler() {
@@ -69,7 +71,7 @@ public class MotionDetectActivity extends ControlActivity {
             @Override
             public void onClick(View view) {
                 if (!detectionStarted) {
-                    core = new MotionDetectCore(actionHandler, uiHandler);
+                    core = new MotionDetectCore(actionHandler, uiHandler, thresholdPixelDifference, thresholdObjectSize);
                     switch (behaviourWhenDetect.getCheckedRadioButtonId()) {
                         case R.id.record_mode:
                             core.setBehavior(MotionDetectCore.RECORD);
@@ -117,8 +119,9 @@ public class MotionDetectActivity extends ControlActivity {
             public void afterTextChanged(Editable editable) {
                 String number = editable.toString();
                 if (number.length()!=0) {
-                    int threshold = Integer.parseInt(number);
-                    core.setThresholdPixelDifference(threshold);
+                    thresholdPixelDifference = Integer.parseInt(number);
+                    if (core != null)
+                        core.setThresholdPixelDifference(thresholdPixelDifference);
                 }
             }
         };
@@ -135,8 +138,9 @@ public class MotionDetectActivity extends ControlActivity {
             public void afterTextChanged(Editable editable) {
                 String number = editable.toString();
                 if (number.length()!=0) {
-                    int threshold = Integer.parseInt(number);
-                    core.setThresholdObjectSize(threshold);
+                    thresholdObjectSize = Integer.parseInt(number);
+                    if (core != null)
+                        core.setThresholdObjectSize(thresholdObjectSize);
                 }
 
             }
