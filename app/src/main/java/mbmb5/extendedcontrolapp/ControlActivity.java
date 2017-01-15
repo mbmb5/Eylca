@@ -181,9 +181,8 @@ public class ControlActivity extends AppCompatActivity {
                 startActivity(settingsIntent);
                 return true;
             case R.id.action_help:
-                Toast toast = Toast.makeText(getApplicationContext(), "Feature not available yet", Toast.LENGTH_SHORT);
-                toast.show();
-                //TODO call activity to show help
+                Intent helpIntent = new Intent(this, HelpActivity.class);
+                startActivity(helpIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -36,4 +36,19 @@
     </string-array>
     <!-- Strings related to Settings -->
     <string name="pref_ip">Camera IP address</string>
+    <string name="title_activity_help">HelpActivity</string>
+    <!-- Help content -->
+    <string name="help">
+        This application aims at extending your Lumix camera by adding some features it may not have.\n
+        For simple remote control, you should probably use the official app instead of this app.\n
+        (your camera will be better supported).\n
+        Please note that Eylca is an unofficial app, not supported in any way by Panasonic.\n
+        \n
+        This application allows you to take pictures or record a video when a motion is detected.\n
+        The first thing to do is to connect the phone to the wifi provided by the camera BEFORE launching the app.\n
+        Then, if nothing appears, go to the settings and try to change the ip address to the ip address of your camera.\n
+        If however you see what the camera sees, then it is perfect !
+        \n\n
+        This application is open-source, released under GPLv3. You can see the code on https://github.com/mbmb5/Eylca
+    </string>
 </resources>
