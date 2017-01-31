@@ -61,12 +61,7 @@ public class StreamView extends SurfaceView {
         holder.addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-                manager.stopThread();
-                try {
-                    manager.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                ControlActivity.stopThreads();
                 manager = null;
             }
 
@@ -74,6 +69,7 @@ public class StreamView extends SurfaceView {
             public void surfaceCreated(SurfaceHolder holder) {
                 if (manager == null) {
                     manager = new StreamViewManaging(view);
+                    ControlActivity.threads.add(manager);
                 }
                 if (!manager.isRunning()) {
                     manager.start();

@@ -39,12 +39,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 /* this activity allows to control the camera through a webview
  * the webview has to be set by activities which extend this one
  */
 public class ControlActivity extends AppCompatActivity {
     public static WebView myWebView;
     public static Activity activity;
+
+    public static ArrayList<LoopThread> threads = new ArrayList<LoopThread>();
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -121,6 +125,19 @@ public class ControlActivity extends AppCompatActivity {
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
     }
 
+    public static void stopThreads() {
+        while (!threads.isEmpty()) {
+            LoopThread currentThread = threads.remove(0);
+            assert(currentThread != null);
+            currentThread.stopThread();
+            try {
+                currentThread.join();
+            } catch(InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -148,12 +165,14 @@ public class ControlActivity extends AppCompatActivity {
         switch (position) {
             case 0:
                 if (activity.getClass() == MotionDetectActivity.class) {
+                    stopThreads();
                     Intent intent = new Intent(this, ManualControlActivity.class);
                     startActivity(intent);
                 }
                 break;
             case 1:
                 if (activity.getClass() == ManualControlActivity.class) {
+                    stopThreads();
                     Intent intent = new Intent(this, MotionDetectActivity.class);
                     startActivity(intent);
                 }
@@ -176,16 +195,24 @@ public class ControlActivity extends AppCompatActivity {
         }
         switch (item.getItemId()) {
             case R.id.action_settings:
+                stopThreads();
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);
                 startActivity(settingsIntent);
                 return true;
             case R.id.action_help:
+                stopThreads();
                 Intent helpIntent = new Intent(this, HelpActivity.class);
                 startActivity(helpIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        stopThreads();
+        super.onBackPressed();
     }
 
     public static void loadCmd(String cmd) {

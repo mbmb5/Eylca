@@ -72,6 +72,7 @@ public class MotionDetectActivity extends ControlActivity {
             public void onClick(View view) {
                 if (!detectionStarted) {
                     core = new MotionDetectCore(actionHandler, uiHandler, thresholdPixelDifference, thresholdObjectSize);
+                    threads.add(core);
                     switch (behaviourWhenDetect.getCheckedRadioButtonId()) {
                         case R.id.record_mode:
                             core.setBehavior(MotionDetectCore.RECORD);
@@ -88,12 +89,7 @@ public class MotionDetectActivity extends ControlActivity {
                     startStopMotionDetect.setText(R.string.disable_motion_detect);
                     statusTextView.setText(R.string.motion_status_no_motion);
                 } else {
-                    core.stopThread();
-                    try {
-                        core.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    stopThreads();
                     core = null;
                     detectionStarted = false;
                     startStopMotionDetect.setText(R.string.enable_motion_detect);
@@ -161,16 +157,4 @@ public class MotionDetectActivity extends ControlActivity {
         statusTextView.setBackgroundColor(activity.getResources().getColor(R.color.colorPrimaryDark));
     }
 
-    @Override
-    public void onBackPressed() {
-        if (detectionStarted) {
-            core.stopThread();
-            try {
-                core.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        super.onBackPressed();
-    }
 }
