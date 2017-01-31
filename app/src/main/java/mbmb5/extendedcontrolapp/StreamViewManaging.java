@@ -23,23 +23,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 
-public class StreamViewManaging extends Thread {
+public class StreamViewManaging extends LoopThread {
     private StreamView streamView;
-    private boolean stop;
-    private boolean running;
 
     public StreamViewManaging(StreamView view) {
         streamView = view;
         stop = false;
         running = false;
-    }
-
-    public void stopThread() {
-        stop = true;
-    }
-
-    public boolean isRunning() {
-        return running;
     }
 
     @Override

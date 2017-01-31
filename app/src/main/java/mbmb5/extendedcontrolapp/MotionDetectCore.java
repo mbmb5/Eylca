@@ -33,9 +33,7 @@ import android.os.Message;
 import java.util.LinkedList;
 
 
-public class MotionDetectCore extends Thread {
-    private boolean stop;
-    private boolean running;
+public class MotionDetectCore extends LoopThread {
     private LinkedList<Bitmap> oldImages;
     private Handler actionHandler, uiHandler;
     private int thresholdPixelDifference = 100;
@@ -53,14 +51,6 @@ public class MotionDetectCore extends Thread {
         this.uiHandler = uiHandler;
         this.thresholdPixelDifference = thresholdPixelDifference;
         this.thresholdObjectSize = thresholdObjectSize;
-    }
-
-    public void stopThread() {
-        stop = true;
-    }
-
-    public boolean isRunning() {
-        return running;
     }
 
     public void setThresholdPixelDifference(int thresholdPixelDifference) {
