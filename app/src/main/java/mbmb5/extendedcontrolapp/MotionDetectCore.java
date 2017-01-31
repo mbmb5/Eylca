@@ -130,7 +130,6 @@ public class MotionDetectCore extends LoopThread {
                 if (bitmap == null) {
                     throw new Exception("Found null Bitmap");
                 }
-                oldImages.add(bitmap);
                 if (oldImages.size() > 20) {
                     Bitmap oldBitmap = oldImages.removeFirst();
                     if (detectMotion(oldBitmap, bitmap)) {
@@ -186,6 +185,8 @@ public class MotionDetectCore extends LoopThread {
                         sleep(100);
                     }
                 }
+                /* done at the end to prevent adding the image if an exception occurred */
+                oldImages.add(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
             }
