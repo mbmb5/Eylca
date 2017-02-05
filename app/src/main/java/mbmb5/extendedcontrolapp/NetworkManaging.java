@@ -23,6 +23,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+import android.os.Build;
 
 public class NetworkManaging {
     public static boolean isMobileDataOn(Context context) {
@@ -43,23 +44,26 @@ public class NetworkManaging {
     public static boolean forceWifiUse(Context context) {
         if (context == null)
             return false;
-        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
-        //TODO rewrite this in order to support multiples API
-        //TODO (use bindProcessToNetwork, setProcessDefaultNetwork, and requestRouteToHost)
-        Network[] networks = manager.getAllNetworks();
-        int i = 0;
-        for (i = 0; i < networks.length; i++) {
-            NetworkInfo info = manager.getNetworkInfo(networks[i]);
-            if (info != null)
-                if (info.isConnected())
-                    if (info.getType() == manager.TYPE_WIFI)
-                        break;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ConnectivityManager manager = (ConnectivityManager) context.getSystemService(context.CONNECTIVITY_SERVICE);
+            //TODO rewrite this in order to support multiples API
+            //TODO (use bindProcessToNetwork, setProcessDefaultNetwork, and requestRouteToHost)
+            Network[] networks = manager.getAllNetworks();
+            int i = 0;
+            for (i = 0; i < networks.length; i++) {
+                NetworkInfo info = manager.getNetworkInfo(networks[i]);
+                if (info != null)
+                    if (info.isConnected())
+                        if (info.getType() == manager.TYPE_WIFI)
+                            break;
+            }
+            if (i == networks.length) {
+                return false;
+            } else {
+                return manager.bindProcessToNetwork(networks[i]);
+            }
         }
-        if (i == networks.length) {
-            return false;
-        } else {
-            return manager.bindProcessToNetwork(networks[i]);
-        }
+        return false;
     }
 
     public static String getHost(Context context) {

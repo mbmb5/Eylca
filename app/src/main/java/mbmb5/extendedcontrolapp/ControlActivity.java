@@ -217,8 +217,7 @@ public class ControlActivity extends AppCompatActivity {
 
     public static void loadCmd(String cmd) {
         myWebView.loadUrl("http://" +
-                PreferenceManager
-                        .getDefaultSharedPreferences(activity.getApplicationContext())
+                PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext())
                         .getString("camera_ip", "192.168.54.1")+"/cam.cgi"
                 + cmd);
     }
