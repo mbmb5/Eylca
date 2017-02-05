@@ -95,7 +95,8 @@ public class StreamView extends SurfaceView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
         if (currentImage != null) {
             canvas.drawBitmap(currentImage, 0, 0, null);
         }

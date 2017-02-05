@@ -44,7 +44,7 @@ public class StreamViewManaging extends LoopThread {
                 canvas = streamView.getHolder().lockCanvas();
                 synchronized (streamView.getHolder()) {
                     streamView.setCurrentImage(bitmap);
-                    streamView.onDraw(canvas);
+                    streamView.draw(canvas);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
