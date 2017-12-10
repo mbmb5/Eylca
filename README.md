@@ -1,6 +1,9 @@
 # Eylca
 Extend Your Lumix Camera's Abilities
 
+<a href="https://f-droid.org/packages/mbmb5.lumixextendedcontrolapp/" target="_blank">
+<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="90"/></a>
+
 ## Disclaimer
 This application is *unofficial*.
 It is not an official Panasonic product, and it is not approved by or associated with Panasonic in any way.
